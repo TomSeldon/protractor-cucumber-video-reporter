@@ -27,6 +27,7 @@ module.exports = class ScreenRecording {
     /**
      * @param {object=} options
      */
+
     constructor (options = {}) {
         /**
          * @type {{}}
@@ -34,6 +35,16 @@ module.exports = class ScreenRecording {
          */
         this._options = merge({}, DEFAULT_OPTIONS, options);
 
+        /**
+         * @type {string}
+         * @private
+         */
+        this._videoPath =  path.join(this._options.baseDirectory, this._options.fileName);
+
+        /**
+         * @type {?object}
+         * @private
+         */
         this._ffmpegProcess = null;
     }
 
@@ -42,7 +53,6 @@ module.exports = class ScreenRecording {
      */
     start () {
         const ffmpegArgs = this._getFfmpegArguments();
-        console.log(ffmpegArgs);
 
         this._ffmpegProcess = childProcess.spawn(FFMPEG_COMMAND, ffmpegArgs);
 
@@ -53,6 +63,8 @@ module.exports = class ScreenRecording {
         this._ffmpegProcess.stderr.on('data', data => {
             console.error(data.toString());
         });
+
+        // TODO: Should use callback/promise to notify caller once ffmpeg has started recording. Process started !== recording
     }
 
     /**
@@ -60,6 +72,8 @@ module.exports = class ScreenRecording {
      */
     stop () {
         this._ffmpegProcess.kill();
+
+        console.info('Wrote screen recording to: ');
     }
 
     /**
@@ -68,9 +82,8 @@ module.exports = class ScreenRecording {
      */
     _getFfmpegArguments () {
         const ffmpegArgs = FFMPEG_ARGS.slice(0, FFMPEG_ARGS.length);
-        const videoPath = path.join(this._options.baseDirectory, this._options.fileName);
 
-        ffmpegArgs.push(videoPath);
+        ffmpegArgs.push(this._videoPath);
 
         return ffmpegArgs;
     }

@@ -1,0 +1,11 @@
+{
+  "name": "protractor-cucumber-video-reporter",
+  "version": "1.0.0",
+  "dependencies": {
+    "merge": {
+      "version": "1.2.0",
+      "from": "merge@",
+      "resolved": "https://registry.npmjs.org/merge/-/merge-1.2.0.tgz"
+    }
+  }
+}
