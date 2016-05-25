@@ -56,13 +56,9 @@ module.exports = class ScreenRecording {
 
         this._ffmpegProcess = childProcess.spawn(FFMPEG_COMMAND, ffmpegArgs);
 
-        this._ffmpegProcess.stdout.on('data', data => {
-            console.info(data);
-        });
-
-        this._ffmpegProcess.stderr.on('data', data => {
-            console.error(data.toString());
-        });
+        // Output debug and error information
+        this._ffmpegProcess.stdout.on('data', data => console.info(data));
+        this._ffmpegProcess.stderr.on('data', data => console.error(data.toString()));
 
         // TODO: Should use callback/promise to notify caller once ffmpeg has started recording. Process started !== recording
     }
