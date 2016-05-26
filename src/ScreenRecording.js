@@ -69,7 +69,7 @@ module.exports = class ScreenRecording {
     stop () {
         this._ffmpegProcess.kill();
 
-        console.info('Wrote screen recording to: ');
+        console.info(`Wrote screen recording to: ${this._videoPath}`);
     }
 
     /**
